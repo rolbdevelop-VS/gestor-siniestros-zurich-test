@@ -1,0 +1,6 @@
+@ZurichClaims.Api_HostAddress = http://localhost:5137
+
+GET {{ZurichClaims.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

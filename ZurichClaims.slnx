@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/backend/">
+    <Project Path="backend/ZurichClaims.Api/ZurichClaims.Api.csproj" />
+  </Folder>
+</Solution>

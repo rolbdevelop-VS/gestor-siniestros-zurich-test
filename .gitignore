@@ -1,0 +1,28 @@
+# .NET build artifacts
+**/bin/
+**/obj/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+.vs/
+.vscode/
+
+# SQLite databases (as required)
+*.db
+*.db-shm
+*.db-wal
+
+# Node / Frontend
+**/node_modules/
+**/dist/
+**/dist-ssr/
+*.local
+.env
+.env.*.local
+
+# OS generated
+Thumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+.DS_Store
