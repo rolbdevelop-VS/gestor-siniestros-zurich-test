@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZurichClaims.Api.Models.Entities;
 
 namespace ZurichClaims.Api.Data;
@@ -15,6 +16,17 @@ public class ClaimsDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Value converters para garantizar que SQLite devuelva siempre DateTime con Kind=Utc
+        var utcConverter = new ValueConverter<DateTime, DateTime>(
+            v => v.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v, DateTimeKind.Utc),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+        );
+
+        var nullableUtcConverter = new ValueConverter<DateTime?, DateTime?>(
+            v => !v.HasValue ? v : (v.Value.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc)),
+            v => !v.HasValue ? v : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc)
+        );
 
         // Claim Configuration
         modelBuilder.Entity<Claim>(entity =>
@@ -48,9 +60,11 @@ public class ClaimsDbContext : DbContext
                   .IsRequired();
 
             entity.Property(c => c.CreatedAt)
+                  .HasConversion(utcConverter)
                   .IsRequired();
 
             entity.Property(c => c.UpdatedAt)
+                  .HasConversion(nullableUtcConverter)
                   .IsRequired(false);
 
             // Relación 1:N con ClaimStatusHistory
@@ -84,6 +98,7 @@ public class ClaimsDbContext : DbContext
                   .IsRequired(false);
 
             entity.Property(h => h.ChangedAt)
+                  .HasConversion(utcConverter)
                   .IsRequired();
         });
 
