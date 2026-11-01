@@ -19,12 +19,14 @@ public class ClaimsDbContext : DbContext
 
         // Value converters para garantizar que SQLite devuelva siempre DateTime con Kind=Utc
         var utcConverter = new ValueConverter<DateTime, DateTime>(
-            v => v.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v, DateTimeKind.Utc),
+            v => v.Kind == DateTimeKind.Local ? v.ToUniversalTime() : DateTime.SpecifyKind(v, DateTimeKind.Utc),
             v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
         );
 
         var nullableUtcConverter = new ValueConverter<DateTime?, DateTime?>(
-            v => !v.HasValue ? v : (v.Value.Kind == DateTimeKind.Utc ? v : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc)),
+            v => !v.HasValue
+                ? v
+                : (v.Value.Kind == DateTimeKind.Local ? v.Value.ToUniversalTime() : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc)),
             v => !v.HasValue ? v : DateTime.SpecifyKind(v.Value, DateTimeKind.Utc)
         );
 
