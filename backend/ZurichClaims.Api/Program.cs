@@ -3,9 +3,19 @@ using ZurichClaims.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de la base de datos SQLite con EF Core 8
+// Configuración de la base de datos SQLite con EF Core 8 y ruta determinística contra ContentRoot
+var rawConnectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? "Data Source=claims.db";
+
+var sqliteBuilder = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder(rawConnectionString);
+
+if (!Path.IsPathRooted(sqliteBuilder.DataSource))
+{
+    sqliteBuilder.DataSource = Path.Combine(builder.Environment.ContentRootPath, sqliteBuilder.DataSource);
+}
+
 builder.Services.AddDbContext<ClaimsDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(sqliteBuilder.ConnectionString));
 
 // Configuración estricta de CORS restringida a http://localhost:5173
 builder.Services.AddCors(options =>
