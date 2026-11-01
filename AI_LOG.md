@@ -1,7 +1,7 @@
 # AI_LOG - Registro de Uso Crítico y Decisiones de Arquitectura
 
 **Proyecto:** Gestor de Siniestros Simplificado (Zurich Claims)  
-**Candidato:** Bryan Robles  
+**Candidato:** Brayan Robles  
 **Posición:** ZCC | .NET DEVELOPER  
 **Asistente de IA:** Antigravity (Google DeepMind)
 
