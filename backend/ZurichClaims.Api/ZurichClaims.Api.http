@@ -1,6 +1,184 @@
-@ZurichClaims.Api_HostAddress = http://localhost:5137
+@baseUrl = http://localhost:5137
+@userId = 1001
 
-GET {{ZurichClaims.Api_HostAddress}}/weatherforecast/
+### 1. Listar todos los siniestros activos
+GET {{baseUrl}}/api/claims
+x-usuario: {{userId}}
 Accept: application/json
 
-###
+### 2. Filtrar siniestros por estado (Open)
+GET {{baseUrl}}/api/claims?status=Open
+x-usuario: {{userId}}
+Accept: application/json
+
+### 3. Filtrar siniestros por estado (InReview)
+GET {{baseUrl}}/api/claims?status=InReview
+x-usuario: {{userId}}
+Accept: application/json
+
+### 4. Filtrar siniestros por estado (Closed)
+GET {{baseUrl}}/api/claims?status=Closed
+x-usuario: {{userId}}
+Accept: application/json
+
+### 5. Buscar siniestros por póliza (coincidencia parcial sin mayúsculas/minúsculas)
+GET {{baseUrl}}/api/claims?policyNumber=pol-2026
+x-usuario: {{userId}}
+Accept: application/json
+
+### 6. Obtener detalle de siniestro por Id existente (con historial ordenado)
+GET {{baseUrl}}/api/claims/1
+x-usuario: {{userId}}
+Accept: application/json
+
+### 7. Obtener detalle de siniestro inexistente (debe retornar 404 ProblemDetails)
+GET {{baseUrl}}/api/claims/99999
+x-usuario: {{userId}}
+Accept: application/json
+
+### 8. Crear un nuevo siniestro exitosamente
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-8899",
+  "insuredName": "Laura Mariana Gómez",
+  "claimType": "Colisión vehicular frontal",
+  "estimatedAmount": 15750.50
+}
+
+### 9. Validación: Crear siniestro sin monto estimado (debe retornar 400)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9901",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": null
+}
+
+### 10. Validación: Crear siniestro con monto 0 (debe retornar 400)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9902",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 0
+}
+
+### 11. Validación: Crear siniestro con monto negativo (debe retornar 400)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9903",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": -500.00
+}
+
+### 12. Validación: Crear siniestro con más de 2 decimales (debe retornar 400)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9904",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 1250.755
+}
+
+### 13. Validación: Crear siniestro con status numérico en el body (debe retornar 400)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9905",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 1000.00,
+  "status": 1
+}
+
+### 14. Actualizar datos de un siniestro existente
+PUT {{baseUrl}}/api/claims/1
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-001-MOD",
+  "insuredName": "Juan Pérez Modificado",
+  "claimType": "Choque lateral urbano",
+  "estimatedAmount": 4200.00
+}
+
+### 15. Cambio de estado válido (Open -> InReview) sobre siniestro 1
+POST {{baseUrl}}/api/claims/1/status
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "newStatus": "InReview",
+  "reason": "Asignado a perito ajustador para inspección presencial"
+}
+
+### 16. Transición de estado inválida (Open -> Closed en siniestro recién creado que está en Open)
+# Suponiendo que el siniestro 3 esté en Closed o el 1 en InReview, probamos Open -> Closed directo:
+POST {{baseUrl}}/api/claims/1/status
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "newStatus": "Closed",
+  "reason": "Cierre forzado no permitido desde Open"
+}
+
+### 17. Borrado lógico de un siniestro (debe retornar 204 No Content)
+DELETE {{baseUrl}}/api/claims/2
+x-usuario: {{userId}}
+
+### 18. Borrado lógico repetido del mismo siniestro (debe retornar 404 Not Found)
+DELETE {{baseUrl}}/api/claims/2
+x-usuario: {{userId}}
+
+### 19. Consulta de siniestro previamente borrado lógicamente (debe retornar 404 Not Found)
+GET {{baseUrl}}/api/claims/2
+x-usuario: {{userId}}
+Accept: application/json
+
+### 20. Validación encabezado x-usuario: ausente (debe retornar 400 ProblemDetails)
+GET {{baseUrl}}/api/claims
+Accept: application/json
+
+### 21. Validación encabezado x-usuario: formato alfanumérico no permitido (debe retornar 400)
+GET {{baseUrl}}/api/claims
+x-usuario: user_invalido_abc
+Accept: application/json
+
+### 22. Validación encabezado x-usuario: vacío (debe retornar 400)
+GET {{baseUrl}}/api/claims
+x-usuario: 
+Accept: application/json
+
+### 23. Validación encabezado x-usuario: más de 20 dígitos (debe retornar 400)
+GET {{baseUrl}}/api/claims
+x-usuario: 1234567890123456789012345
+Accept: application/json
