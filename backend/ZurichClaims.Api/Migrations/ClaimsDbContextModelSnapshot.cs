@@ -65,7 +65,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 1,
                             ClaimType = "Colisión vehicular",
                             CreatedAt = new DateTime(2026, 1, 10, 9, 0, 0, 0, DateTimeKind.Utc),
-                            CurrentStatus = "abierto",
+                            CurrentStatus = "Open",
                             EstimatedAmount = 18500.00m,
                             InsuredName = "Ana Gómez",
                             PolicyNumber = "POL-2024-001"
@@ -75,7 +75,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 2,
                             ClaimType = "Robo de autopartes",
                             CreatedAt = new DateTime(2026, 1, 12, 14, 30, 0, 0, DateTimeKind.Utc),
-                            CurrentStatus = "en revisión",
+                            CurrentStatus = "InReview",
                             EstimatedAmount = 12000.00m,
                             InsuredName = "Carlos Méndez",
                             PolicyNumber = "POL-2024-002",
@@ -86,7 +86,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 3,
                             ClaimType = "Daños por inundación",
                             CreatedAt = new DateTime(2026, 1, 5, 11, 0, 0, 0, DateTimeKind.Utc),
-                            CurrentStatus = "cerrado",
+                            CurrentStatus = "Closed",
                             EstimatedAmount = 45000.00m,
                             InsuredName = "Mariana Torres",
                             PolicyNumber = "POL-2024-003",
@@ -132,7 +132,7 @@ namespace ZurichClaims.Api.Migrations
                             ChangeReason = "Apertura y registro inicial del siniestro",
                             ChangedAt = new DateTime(2026, 1, 10, 9, 0, 0, 0, DateTimeKind.Utc),
                             ClaimId = 1,
-                            NewStatus = "abierto"
+                            NewStatus = "Open"
                         },
                         new
                         {
@@ -140,7 +140,7 @@ namespace ZurichClaims.Api.Migrations
                             ChangeReason = "Apertura y registro inicial del siniestro",
                             ChangedAt = new DateTime(2026, 1, 12, 14, 30, 0, 0, DateTimeKind.Utc),
                             ClaimId = 2,
-                            NewStatus = "abierto"
+                            NewStatus = "Open"
                         },
                         new
                         {
@@ -148,8 +148,8 @@ namespace ZurichClaims.Api.Migrations
                             ChangeReason = "Asignación a perito técnico para inspección física",
                             ChangedAt = new DateTime(2026, 1, 13, 10, 15, 0, 0, DateTimeKind.Utc),
                             ClaimId = 2,
-                            NewStatus = "en revisión",
-                            PreviousStatus = "abierto"
+                            NewStatus = "InReview",
+                            PreviousStatus = "Open"
                         },
                         new
                         {
@@ -157,7 +157,7 @@ namespace ZurichClaims.Api.Migrations
                             ChangeReason = "Apertura y registro inicial del siniestro",
                             ChangedAt = new DateTime(2026, 1, 5, 11, 0, 0, 0, DateTimeKind.Utc),
                             ClaimId = 3,
-                            NewStatus = "abierto"
+                            NewStatus = "Open"
                         },
                         new
                         {
@@ -165,8 +165,8 @@ namespace ZurichClaims.Api.Migrations
                             ChangeReason = "Revisión de cobertura de póliza y deducible",
                             ChangedAt = new DateTime(2026, 1, 8, 15, 20, 0, 0, DateTimeKind.Utc),
                             ClaimId = 3,
-                            NewStatus = "en revisión",
-                            PreviousStatus = "abierto"
+                            NewStatus = "InReview",
+                            PreviousStatus = "Open"
                         },
                         new
                         {
@@ -174,8 +174,8 @@ namespace ZurichClaims.Api.Migrations
                             ChangeReason = "Indemnización liquidada y finiquitada por el asegurado",
                             ChangedAt = new DateTime(2026, 1, 20, 16, 45, 0, 0, DateTimeKind.Utc),
                             ClaimId = 3,
-                            NewStatus = "cerrado",
-                            PreviousStatus = "en revisión"
+                            NewStatus = "Closed",
+                            PreviousStatus = "InReview"
                         });
                 });
 

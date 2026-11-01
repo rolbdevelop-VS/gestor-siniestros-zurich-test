@@ -9,9 +9,9 @@ public class ClaimStatusHistory
     // Navigation property
     public Claim Claim { get; set; } = null!;
 
-    public string? PreviousStatus { get; set; }
+    public ClaimStatus? PreviousStatus { get; set; }
 
-    public string NewStatus { get; set; } = string.Empty;
+    public ClaimStatus NewStatus { get; set; }
 
     public string? ChangeReason { get; set; }
 

@@ -43,8 +43,9 @@ public class ClaimsDbContext : DbContext
                   .HasPrecision(18, 2);
 
             entity.Property(c => c.CurrentStatus)
-                  .IsRequired()
-                  .HasMaxLength(30);
+                  .HasConversion<string>()
+                  .HasMaxLength(30)
+                  .IsRequired();
 
             entity.Property(c => c.CreatedAt)
                   .IsRequired();
@@ -66,14 +67,16 @@ public class ClaimsDbContext : DbContext
 
             entity.HasKey(h => h.Id);
 
-            // PreviousStatus nullable para registrar el estado inicial (null -> 'abierto')
+            // PreviousStatus nullable para registrar el estado inicial (null -> Open)
             entity.Property(h => h.PreviousStatus)
+                  .HasConversion<string>()
                   .HasMaxLength(30)
                   .IsRequired(false);
 
             entity.Property(h => h.NewStatus)
-                  .IsRequired()
-                  .HasMaxLength(30);
+                  .HasConversion<string>()
+                  .HasMaxLength(30)
+                  .IsRequired();
 
             // ChangeReason opcional
             entity.Property(h => h.ChangeReason)
@@ -105,7 +108,7 @@ public class ClaimsDbContext : DbContext
                 InsuredName = "Ana Gómez",
                 ClaimType = "Colisión vehicular",
                 EstimatedAmount = 18500.00m,
-                CurrentStatus = "abierto",
+                CurrentStatus = ClaimStatus.Open,
                 CreatedAt = fixedDate1,
                 UpdatedAt = null
             },
@@ -116,7 +119,7 @@ public class ClaimsDbContext : DbContext
                 InsuredName = "Carlos Méndez",
                 ClaimType = "Robo de autopartes",
                 EstimatedAmount = 12000.00m,
-                CurrentStatus = "en revisión",
+                CurrentStatus = ClaimStatus.InReview,
                 CreatedAt = fixedDate2A,
                 UpdatedAt = fixedDate2B
             },
@@ -127,30 +130,30 @@ public class ClaimsDbContext : DbContext
                 InsuredName = "Mariana Torres",
                 ClaimType = "Daños por inundación",
                 EstimatedAmount = 45000.00m,
-                CurrentStatus = "cerrado",
+                CurrentStatus = ClaimStatus.Closed,
                 CreatedAt = fixedDate3A,
                 UpdatedAt = fixedDate3C
             }
         );
 
         modelBuilder.Entity<ClaimStatusHistory>().HasData(
-            // Historial Siniestro 1: Estado actual 'abierto' (1 entrada inicial)
+            // Historial Siniestro 1: Estado actual Open (1 entrada inicial)
             new ClaimStatusHistory
             {
                 Id = 1,
                 ClaimId = 1,
                 PreviousStatus = null,
-                NewStatus = "abierto",
+                NewStatus = ClaimStatus.Open,
                 ChangeReason = "Apertura y registro inicial del siniestro",
                 ChangedAt = fixedDate1
             },
-            // Historial Siniestro 2: Estado actual 'en revisión' (2 entradas: abierto -> en revisión)
+            // Historial Siniestro 2: Estado actual InReview (2 entradas: Open -> InReview)
             new ClaimStatusHistory
             {
                 Id = 2,
                 ClaimId = 2,
                 PreviousStatus = null,
-                NewStatus = "abierto",
+                NewStatus = ClaimStatus.Open,
                 ChangeReason = "Apertura y registro inicial del siniestro",
                 ChangedAt = fixedDate2A
             },
@@ -158,18 +161,18 @@ public class ClaimsDbContext : DbContext
             {
                 Id = 3,
                 ClaimId = 2,
-                PreviousStatus = "abierto",
-                NewStatus = "en revisión",
+                PreviousStatus = ClaimStatus.Open,
+                NewStatus = ClaimStatus.InReview,
                 ChangeReason = "Asignación a perito técnico para inspección física",
                 ChangedAt = fixedDate2B
             },
-            // Historial Siniestro 3: Estado actual 'cerrado' (3 entradas: abierto -> en revisión -> cerrado)
+            // Historial Siniestro 3: Estado actual Closed (3 entradas: Open -> InReview -> Closed)
             new ClaimStatusHistory
             {
                 Id = 4,
                 ClaimId = 3,
                 PreviousStatus = null,
-                NewStatus = "abierto",
+                NewStatus = ClaimStatus.Open,
                 ChangeReason = "Apertura y registro inicial del siniestro",
                 ChangedAt = fixedDate3A
             },
@@ -177,8 +180,8 @@ public class ClaimsDbContext : DbContext
             {
                 Id = 5,
                 ClaimId = 3,
-                PreviousStatus = "abierto",
-                NewStatus = "en revisión",
+                PreviousStatus = ClaimStatus.Open,
+                NewStatus = ClaimStatus.InReview,
                 ChangeReason = "Revisión de cobertura de póliza y deducible",
                 ChangedAt = fixedDate3B
             },
@@ -186,8 +189,8 @@ public class ClaimsDbContext : DbContext
             {
                 Id = 6,
                 ClaimId = 3,
-                PreviousStatus = "en revisión",
-                NewStatus = "cerrado",
+                PreviousStatus = ClaimStatus.InReview,
+                NewStatus = ClaimStatus.Closed,
                 ChangeReason = "Indemnización liquidada y finiquitada por el asegurado",
                 ChangedAt = fixedDate3C
             }

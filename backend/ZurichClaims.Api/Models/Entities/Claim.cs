@@ -12,7 +12,7 @@ public class Claim
 
     public decimal EstimatedAmount { get; set; }
 
-    public string CurrentStatus { get; set; } = "abierto";
+    public ClaimStatus CurrentStatus { get; set; } = ClaimStatus.Open;
 
     public DateTime CreatedAt { get; set; }
 

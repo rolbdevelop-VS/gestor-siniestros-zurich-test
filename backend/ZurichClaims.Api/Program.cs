@@ -18,8 +18,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Soporte para controladores de API
-builder.Services.AddControllers();
+// Soporte para controladores de API con serialización de enums como string
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 
 // Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
