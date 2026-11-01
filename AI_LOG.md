@@ -37,3 +37,4 @@ Establecer la estructura base del proyecto, configurar el entorno de desarrollo 
 - [x] Migración inicial generada y probada (`Migrations/20261031225451_InitialCreate.cs`).
 - [x] Pipeline configurado con `Migrate()`, CORS restringido y Swagger UI.
 - [x] Base de datos y logs excluidos en `.gitignore`.
+
