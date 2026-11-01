@@ -18,7 +18,18 @@ public class Claim
 
     public DateTime? UpdatedAt { get; set; }
 
+    // Auditoría
+    public string CreatedBy { get; set; } = string.Empty;
+
+    public string? UpdatedBy { get; set; }
+
+    // Borrado lógico
+    public bool IsDeleted { get; set; } = false;
+
+    public DateTime? DeletedAt { get; set; }
+
+    public string? DeletedBy { get; set; }
+
     // Navigation property for 1:N relationship
     public ICollection<ClaimStatusHistory> StatusHistory { get; set; } = new List<ClaimStatusHistory>();
 }
-

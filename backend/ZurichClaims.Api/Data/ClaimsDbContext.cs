@@ -69,11 +69,37 @@ public class ClaimsDbContext : DbContext
                   .HasConversion(nullableUtcConverter)
                   .IsRequired(false);
 
+            // Campos de auditoría
+            entity.Property(c => c.CreatedBy)
+                  .IsRequired()
+                  .HasMaxLength(20);
+
+            entity.Property(c => c.UpdatedBy)
+                  .HasMaxLength(20)
+                  .IsRequired(false);
+
+            // Borrado lógico
+            entity.Property(c => c.IsDeleted)
+                  .IsRequired()
+                  .HasDefaultValue(false);
+
+            entity.Property(c => c.DeletedAt)
+                  .HasConversion(nullableUtcConverter)
+                  .IsRequired(false);
+
+            entity.Property(c => c.DeletedBy)
+                  .HasMaxLength(20)
+                  .IsRequired(false);
+
+            // Filtro global: excluye siniestros borrados de todas las consultas ordinarias
+            entity.HasQueryFilter(c => !c.IsDeleted);
+
             // Relación 1:N con ClaimStatusHistory
+            // Restrict: la BD impide eliminar físicamente un siniestro que tenga historial
             entity.HasMany(c => c.StatusHistory)
                   .WithOne(h => h.Claim)
                   .HasForeignKey(h => h.ClaimId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .OnDelete(DeleteBehavior.Restrict);
         });
 
         // ClaimStatusHistory Configuration
@@ -102,6 +128,10 @@ public class ClaimsDbContext : DbContext
             entity.Property(h => h.ChangedAt)
                   .HasConversion(utcConverter)
                   .IsRequired();
+
+            entity.Property(h => h.ChangedBy)
+                  .IsRequired()
+                  .HasMaxLength(20);
         });
 
         // Seed Data con fechas UTC fijas (determinísticas) e historial coherente
@@ -110,13 +140,14 @@ public class ClaimsDbContext : DbContext
 
     private static void SeedData(ModelBuilder modelBuilder)
     {
-        var fixedDate1 = new DateTime(2026, 1, 10, 9, 0, 0, DateTimeKind.Utc);
+        var fixedDate1  = new DateTime(2026, 1, 10, 9, 0, 0, DateTimeKind.Utc);
         var fixedDate2A = new DateTime(2026, 1, 12, 14, 30, 0, DateTimeKind.Utc);
         var fixedDate2B = new DateTime(2026, 1, 13, 10, 15, 0, DateTimeKind.Utc);
         var fixedDate3A = new DateTime(2026, 1, 5, 11, 0, 0, DateTimeKind.Utc);
         var fixedDate3B = new DateTime(2026, 1, 8, 15, 20, 0, DateTimeKind.Utc);
         var fixedDate3C = new DateTime(2026, 1, 20, 16, 45, 0, DateTimeKind.Utc);
 
+        // Registros del sistema usan CreatedBy = "0"
         modelBuilder.Entity<Claim>().HasData(
             new Claim
             {
@@ -127,7 +158,12 @@ public class ClaimsDbContext : DbContext
                 EstimatedAmount = 18500.00m,
                 CurrentStatus = ClaimStatus.Open,
                 CreatedAt = fixedDate1,
-                UpdatedAt = null
+                UpdatedAt = null,
+                CreatedBy = "0",
+                UpdatedBy = null,
+                IsDeleted = false,
+                DeletedAt = null,
+                DeletedBy = null
             },
             new Claim
             {
@@ -138,7 +174,12 @@ public class ClaimsDbContext : DbContext
                 EstimatedAmount = 12000.00m,
                 CurrentStatus = ClaimStatus.InReview,
                 CreatedAt = fixedDate2A,
-                UpdatedAt = fixedDate2B
+                UpdatedAt = fixedDate2B,
+                CreatedBy = "0",
+                UpdatedBy = "0",
+                IsDeleted = false,
+                DeletedAt = null,
+                DeletedBy = null
             },
             new Claim
             {
@@ -149,7 +190,12 @@ public class ClaimsDbContext : DbContext
                 EstimatedAmount = 45000.00m,
                 CurrentStatus = ClaimStatus.Closed,
                 CreatedAt = fixedDate3A,
-                UpdatedAt = fixedDate3C
+                UpdatedAt = fixedDate3C,
+                CreatedBy = "0",
+                UpdatedBy = "0",
+                IsDeleted = false,
+                DeletedAt = null,
+                DeletedBy = null
             }
         );
 
@@ -162,7 +208,8 @@ public class ClaimsDbContext : DbContext
                 PreviousStatus = null,
                 NewStatus = ClaimStatus.Open,
                 ChangeReason = "Apertura y registro inicial del siniestro",
-                ChangedAt = fixedDate1
+                ChangedAt = fixedDate1,
+                ChangedBy = "0"
             },
             // Historial Siniestro 2: Estado actual InReview (2 entradas: Open -> InReview)
             new ClaimStatusHistory
@@ -172,7 +219,8 @@ public class ClaimsDbContext : DbContext
                 PreviousStatus = null,
                 NewStatus = ClaimStatus.Open,
                 ChangeReason = "Apertura y registro inicial del siniestro",
-                ChangedAt = fixedDate2A
+                ChangedAt = fixedDate2A,
+                ChangedBy = "0"
             },
             new ClaimStatusHistory
             {
@@ -181,7 +229,8 @@ public class ClaimsDbContext : DbContext
                 PreviousStatus = ClaimStatus.Open,
                 NewStatus = ClaimStatus.InReview,
                 ChangeReason = "Asignación a perito técnico para inspección física",
-                ChangedAt = fixedDate2B
+                ChangedAt = fixedDate2B,
+                ChangedBy = "0"
             },
             // Historial Siniestro 3: Estado actual Closed (3 entradas: Open -> InReview -> Closed)
             new ClaimStatusHistory
@@ -191,7 +240,8 @@ public class ClaimsDbContext : DbContext
                 PreviousStatus = null,
                 NewStatus = ClaimStatus.Open,
                 ChangeReason = "Apertura y registro inicial del siniestro",
-                ChangedAt = fixedDate3A
+                ChangedAt = fixedDate3A,
+                ChangedBy = "0"
             },
             new ClaimStatusHistory
             {
@@ -200,7 +250,8 @@ public class ClaimsDbContext : DbContext
                 PreviousStatus = ClaimStatus.Open,
                 NewStatus = ClaimStatus.InReview,
                 ChangeReason = "Revisión de cobertura de póliza y deducible",
-                ChangedAt = fixedDate3B
+                ChangedAt = fixedDate3B,
+                ChangedBy = "0"
             },
             new ClaimStatusHistory
             {
@@ -209,9 +260,9 @@ public class ClaimsDbContext : DbContext
                 PreviousStatus = ClaimStatus.InReview,
                 NewStatus = ClaimStatus.Closed,
                 ChangeReason = "Indemnización liquidada y finiquitada por el asegurado",
-                ChangedAt = fixedDate3C
+                ChangedAt = fixedDate3C,
+                ChangedBy = "0"
             }
         );
     }
 }
-

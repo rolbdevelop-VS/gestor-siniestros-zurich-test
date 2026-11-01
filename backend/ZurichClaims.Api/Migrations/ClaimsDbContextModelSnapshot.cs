@@ -31,9 +31,21 @@ namespace ZurichClaims.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CurrentStatus")
                         .IsRequired()
                         .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("EstimatedAmount")
@@ -45,12 +57,21 @@ namespace ZurichClaims.Api.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("PolicyNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -65,9 +86,11 @@ namespace ZurichClaims.Api.Migrations
                             Id = 1,
                             ClaimType = "Colisión vehicular",
                             CreatedAt = new DateTime(2026, 1, 10, 9, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "0",
                             CurrentStatus = "Open",
                             EstimatedAmount = 18500.00m,
                             InsuredName = "Ana Gómez",
+                            IsDeleted = false,
                             PolicyNumber = "POL-2024-001"
                         },
                         new
@@ -75,22 +98,28 @@ namespace ZurichClaims.Api.Migrations
                             Id = 2,
                             ClaimType = "Robo de autopartes",
                             CreatedAt = new DateTime(2026, 1, 12, 14, 30, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "0",
                             CurrentStatus = "InReview",
                             EstimatedAmount = 12000.00m,
                             InsuredName = "Carlos Méndez",
+                            IsDeleted = false,
                             PolicyNumber = "POL-2024-002",
-                            UpdatedAt = new DateTime(2026, 1, 13, 10, 15, 0, 0, DateTimeKind.Utc)
+                            UpdatedAt = new DateTime(2026, 1, 13, 10, 15, 0, 0, DateTimeKind.Utc),
+                            UpdatedBy = "0"
                         },
                         new
                         {
                             Id = 3,
                             ClaimType = "Daños por inundación",
                             CreatedAt = new DateTime(2026, 1, 5, 11, 0, 0, 0, DateTimeKind.Utc),
+                            CreatedBy = "0",
                             CurrentStatus = "Closed",
                             EstimatedAmount = 45000.00m,
                             InsuredName = "Mariana Torres",
+                            IsDeleted = false,
                             PolicyNumber = "POL-2024-003",
-                            UpdatedAt = new DateTime(2026, 1, 20, 16, 45, 0, 0, DateTimeKind.Utc)
+                            UpdatedAt = new DateTime(2026, 1, 20, 16, 45, 0, 0, DateTimeKind.Utc),
+                            UpdatedBy = "0"
                         });
                 });
 
@@ -105,6 +134,11 @@ namespace ZurichClaims.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ChangedBy")
+                        .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ClaimId")
@@ -131,6 +165,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 1,
                             ChangeReason = "Apertura y registro inicial del siniestro",
                             ChangedAt = new DateTime(2026, 1, 10, 9, 0, 0, 0, DateTimeKind.Utc),
+                            ChangedBy = "0",
                             ClaimId = 1,
                             NewStatus = "Open"
                         },
@@ -139,6 +174,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 2,
                             ChangeReason = "Apertura y registro inicial del siniestro",
                             ChangedAt = new DateTime(2026, 1, 12, 14, 30, 0, 0, DateTimeKind.Utc),
+                            ChangedBy = "0",
                             ClaimId = 2,
                             NewStatus = "Open"
                         },
@@ -147,6 +183,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 3,
                             ChangeReason = "Asignación a perito técnico para inspección física",
                             ChangedAt = new DateTime(2026, 1, 13, 10, 15, 0, 0, DateTimeKind.Utc),
+                            ChangedBy = "0",
                             ClaimId = 2,
                             NewStatus = "InReview",
                             PreviousStatus = "Open"
@@ -156,6 +193,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 4,
                             ChangeReason = "Apertura y registro inicial del siniestro",
                             ChangedAt = new DateTime(2026, 1, 5, 11, 0, 0, 0, DateTimeKind.Utc),
+                            ChangedBy = "0",
                             ClaimId = 3,
                             NewStatus = "Open"
                         },
@@ -164,6 +202,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 5,
                             ChangeReason = "Revisión de cobertura de póliza y deducible",
                             ChangedAt = new DateTime(2026, 1, 8, 15, 20, 0, 0, DateTimeKind.Utc),
+                            ChangedBy = "0",
                             ClaimId = 3,
                             NewStatus = "InReview",
                             PreviousStatus = "Open"
@@ -173,6 +212,7 @@ namespace ZurichClaims.Api.Migrations
                             Id = 6,
                             ChangeReason = "Indemnización liquidada y finiquitada por el asegurado",
                             ChangedAt = new DateTime(2026, 1, 20, 16, 45, 0, 0, DateTimeKind.Utc),
+                            ChangedBy = "0",
                             ClaimId = 3,
                             NewStatus = "Closed",
                             PreviousStatus = "InReview"
@@ -184,7 +224,7 @@ namespace ZurichClaims.Api.Migrations
                     b.HasOne("ZurichClaims.Api.Models.Entities.Claim", "Claim")
                         .WithMany("StatusHistory")
                         .HasForeignKey("ClaimId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Claim");

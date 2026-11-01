@@ -16,5 +16,7 @@ public class ClaimStatusHistory
     public string? ChangeReason { get; set; }
 
     public DateTime ChangedAt { get; set; }
-}
 
+    // Auditoría: quién realizó el cambio de estado
+    public string ChangedBy { get; set; } = string.Empty;
+}
