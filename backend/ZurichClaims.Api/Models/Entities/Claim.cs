@@ -21,3 +21,4 @@ public class Claim
     // Navigation property for 1:N relationship
     public ICollection<ClaimStatusHistory> StatusHistory { get; set; } = new List<ClaimStatusHistory>();
 }
+

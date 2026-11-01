@@ -17,3 +17,4 @@ public class ClaimStatusHistory
 
     public DateTime ChangedAt { get; set; }
 }
+
