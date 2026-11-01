@@ -118,6 +118,48 @@ public class ClaimService : IClaimService
         return claim.ToSummaryResponse();
     }
 
+    public async Task<ClaimDetailResponse> ChangeStatusAsync(int id, ChangeStatusRequest request, string userId, CancellationToken ct = default)
+    {
+        var claim = await _dbContext.Claims
+            .Include(c => c.StatusHistory)
+            .FirstOrDefaultAsync(c => c.Id == id, ct);
+
+        if (claim is null)
+        {
+            throw new ClaimNotFoundException(id);
+        }
+
+        if (!request.NewStatus.HasValue || !StatusTransitions.IsValid(claim.CurrentStatus, request.NewStatus.Value))
+        {
+            throw new InvalidStatusTransitionException(claim.CurrentStatus, request.NewStatus ?? claim.CurrentStatus);
+        }
+
+        var now = DateTime.UtcNow;
+        var previousStatus = claim.CurrentStatus;
+        var newStatus = request.NewStatus.Value;
+
+        claim.CurrentStatus = newStatus;
+        claim.UpdatedAt = now;
+        claim.UpdatedBy = userId.Trim();
+
+        var historyEntry = new ClaimStatusHistory
+        {
+            PreviousStatus = previousStatus,
+            NewStatus = newStatus,
+            ChangeReason = string.IsNullOrWhiteSpace(request.Reason) ? null : request.Reason.Trim(),
+            ChangedAt = now,
+            ChangedBy = userId.Trim()
+        };
+
+        claim.StatusHistory.Add(historyEntry);
+
+        await _dbContext.SaveChangesAsync(ct);
+
+        _logger.LogInformation("Siniestro {ClaimId} cambió de estado {FromStatus} a {ToStatus} por el usuario {UserId}.", claim.Id, previousStatus, newStatus, userId);
+
+        return claim.ToDetailResponse();
+    }
+
     public async Task DeleteAsync(int id, string userId, CancellationToken ct = default)
     {
         var claim = await _dbContext.Claims.FirstOrDefaultAsync(c => c.Id == id, ct);
@@ -136,4 +178,3 @@ public class ClaimService : IClaimService
         _logger.LogInformation("Siniestro {ClaimId} borrado lógicamente por el usuario {UserId}.", claim.Id, userId);
     }
 }
-

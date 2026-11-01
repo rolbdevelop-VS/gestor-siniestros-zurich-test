@@ -9,6 +9,6 @@ public interface IClaimService
     Task<IReadOnlyList<ClaimSummaryResponse>> GetAllAsync(ClaimStatus? status, string? policyNumber, CancellationToken ct = default);
     Task<ClaimDetailResponse> GetByIdAsync(int id, CancellationToken ct = default);
     Task<ClaimSummaryResponse> UpdateAsync(int id, UpdateClaimRequest request, string userId, CancellationToken ct = default);
+    Task<ClaimDetailResponse> ChangeStatusAsync(int id, ChangeStatusRequest request, string userId, CancellationToken ct = default);
     Task DeleteAsync(int id, string userId, CancellationToken ct = default);
 }
-
