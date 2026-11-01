@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using ZurichClaims.Api.Data;
+using ZurichClaims.Api.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Manejo global de excepciones con ProblemDetails (.NET 8)
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 // Configuración de la base de datos SQLite con EF Core 8 y ruta determinística contra ContentRoot
 var rawConnectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -40,6 +45,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Aplicar migraciones pendientes automáticamente al iniciar la aplicación (NO EnsureCreated)
 using (var scope = app.Services.CreateScope())
