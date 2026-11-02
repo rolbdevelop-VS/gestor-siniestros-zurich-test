@@ -68,8 +68,11 @@ public class ClaimService : IClaimService
 
         if (!string.IsNullOrWhiteSpace(policyNumber))
         {
-            var trimmedPolicy = policyNumber.Trim();
-            query = query.Where(c => EF.Functions.Like(c.PolicyNumber, $"%{trimmedPolicy}%"));
+            var escapedPolicy = policyNumber.Trim()
+                .Replace(@"\", @"\\")
+                .Replace("%", @"\%")
+                .Replace("_", @"\_");
+            query = query.Where(c => EF.Functions.Like(c.PolicyNumber, $"%{escapedPolicy}%", @"\"));
         }
 
         query = query.OrderByDescending(c => c.CreatedAt)

@@ -22,7 +22,32 @@ x-usuario: {{userId}}
 Accept: application/json
 
 ### 5. Buscar siniestros por póliza (coincidencia parcial sin mayúsculas/minúsculas)
-GET {{baseUrl}}/api/claims?policyNumber=pol-2026
+GET {{baseUrl}}/api/claims?policyNumber=pol-2024
+x-usuario: {{userId}}
+Accept: application/json
+
+### 5.1. Búsqueda por póliza exacta
+GET {{baseUrl}}/api/claims?policyNumber=POL-2024-001
+x-usuario: {{userId}}
+Accept: application/json
+
+### 5.2. Búsqueda por comodín '%' escapado (debe retornar 0 si ninguna póliza contiene '%')
+GET {{baseUrl}}/api/claims?policyNumber=%25
+x-usuario: {{userId}}
+Accept: application/json
+
+### 5.3. Búsqueda por comodín '_' escapado (debe retornar 0 si ninguna póliza contiene '_')
+GET {{baseUrl}}/api/claims?policyNumber=_
+x-usuario: {{userId}}
+Accept: application/json
+
+### 5.4. Búsqueda por carácter '\' escapado (debe retornar 0 si ninguna póliza contiene '\')
+GET {{baseUrl}}/api/claims?policyNumber=%5C
+x-usuario: {{userId}}
+Accept: application/json
+
+### 5.5. Búsqueda por comodín '%3' escapado (debe retornar 0 si ninguna póliza contiene '%3')
+GET {{baseUrl}}/api/claims?policyNumber=%253
 x-usuario: {{userId}}
 Accept: application/json
 
