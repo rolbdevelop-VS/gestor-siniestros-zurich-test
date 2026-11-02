@@ -12,8 +12,14 @@ public sealed class TestDb : IDisposable
 
     public TestDb()
     {
-        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection = new SqliteConnection("DataSource=:memory:;Foreign Keys=True");
         _connection.Open();
+
+        using (var cmd = _connection.CreateCommand())
+        {
+            cmd.CommandText = "PRAGMA foreign_keys = ON;";
+            cmd.ExecuteNonQuery();
+        }
 
         _options = new DbContextOptionsBuilder<ClaimsDbContext>()
             .UseSqlite(_connection)
