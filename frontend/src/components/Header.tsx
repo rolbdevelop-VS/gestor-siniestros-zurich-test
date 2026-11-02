@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useUser } from '../context/useUser'
 
 export function Header() {
-  const { userId, setUserId, isValidUser, validationError, isAuthenticated, logout } = useUser()
+  const { userId, isAuthenticated, logout } = useUser()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -83,39 +83,27 @@ export function Header() {
           >
             Usuario:
           </label>
-          <div style={{ position: 'relative' }}>
+          <div>
             <input
               id="userIdInput"
               type="text"
+              readOnly
               value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              placeholder="Ej. 1001"
-              maxLength={20}
+              placeholder="Sin usuario"
               style={{
                 padding: '0.35rem 0.6rem',
                 borderRadius: '4px',
-                border: `2px solid ${isValidUser ? '#48bb78' : '#f56565'}`,
-                backgroundColor: 'white',
+                border: '1px solid #cbd5e0',
+                backgroundColor: '#f8fafc',
                 color: '#1a202c',
                 fontSize: '0.9rem',
-                width: '100px',
+                width: '110px',
                 fontWeight: 600,
+                cursor: 'default',
               }}
-              title={validationError ?? 'Usuario válido'}
+              title="Usuario de sesión activa (solo lectura)"
             />
           </div>
-          {!isValidUser && (
-            <span
-              style={{
-                fontSize: '0.75rem',
-                color: '#feb2b2',
-                maxWidth: '180px',
-                lineHeight: 1.2,
-              }}
-            >
-              {validationError}
-            </span>
-          )}
 
           {isAuthenticated ? (
             <button
