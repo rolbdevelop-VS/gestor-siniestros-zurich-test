@@ -4,7 +4,7 @@
 - **Candidato:** Brayan Robles · **Vacante:** ZCC | .NET Developer (Zurich México)
 - **Herramienta:** Google Antigravity (Pair Programming con agente IA: Claude Sonnet 4.6 / 5.5 & Gemini 3.8 Flash)
 - **Periodo:** 31 de octubre al 2 de noviembre de 2026 (31 turnos de interacción)
-- **Evidencias en repo:** 31 commits incrementales, 73 pruebas automatizadas (`ZurichClaims.Api.Tests`), archivo de pruebas HTTP (`ZurichClaims.Api.http`) e historial auditado en `Chat_Antigravity_History.md`.
+- **Evidencias en repo:** 31 commits incrementales, 73 pruebas automatizadas (`ZurichClaims.Api.Tests`), archivo de pruebas HTTP (`ZurichClaims.Api.http`) e historial auditado en [`Chat_Antigravity_History.md`](./Chat_Antigravity_History.md).
 
 ---
 

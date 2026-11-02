@@ -112,7 +112,9 @@ ZurichClaims/
 │   │   ├── types.ts               # Tipos TypeScript derivados del swagger.json
 │   │   └── utils/                 # Formateadores (es-MX) y validadores
 │   └── .env.example               # Plantilla de variables de entorno
-├── AI_LOG.md                      # Registro de prompts y decisiones asistidas por IA
+├── Documentation/
+│   ├── AI_LOG.md                  # Registro de decisiones y uso crítico de la IA
+│   └── Chat_Antigravity_History.md# Evidencia completa de conversación (pair programming)
 ├── ZurichClaims.sln               # Solución clásica .sln para compatibilidad con SDK 8
 └── README.md                      # Esta documentación
 ```
@@ -223,7 +225,10 @@ Para migrar esta aplicación a SQL Server en un entorno empresarial, **no basta 
 
 ---
 
-## 9. Registro de Asistencia por IA
+## 9. Registro de Asistencia por IA y Evidencias de Conversación
 
-Para consultar el registro completo de prompts, instrucciones de desarrollo y bitácora de interacción asistida por IA, consulta el archivo:
-- [`AI_LOG.md`](file:///c:/Proyectos/Zurich/ZCC/PruebaTecnica/AI_LOG.md)
+Para consultar el análisis crítico, justificación de arquitectura y bitácora de decisiones asistidas por IA:
+- [Documentation/AI_LOG.md](./Documentation/AI_LOG.md)
+
+Para consultar la transcripción y evidencia completa turno por turno de la sesión de pair programming:
+- [Documentation/Chat_Antigravity_History.md](./Documentation/Chat_Antigravity_History.md)
