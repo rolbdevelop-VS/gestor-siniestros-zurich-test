@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -21,7 +21,7 @@ namespace ZurichClaims.Api.Migrations
                 type: "TEXT",
                 maxLength: 20,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: "0");
 
             migrationBuilder.AddColumn<string>(
                 name: "CreatedBy",
@@ -29,7 +29,7 @@ namespace ZurichClaims.Api.Migrations
                 type: "TEXT",
                 maxLength: 20,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: "0");
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "DeletedAt",
