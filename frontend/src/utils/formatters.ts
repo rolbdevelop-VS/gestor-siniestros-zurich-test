@@ -30,3 +30,4 @@ export function formatDateTime(utcDateString: string): string {
     minute: '2-digit',
   }).format(date)
 }
+

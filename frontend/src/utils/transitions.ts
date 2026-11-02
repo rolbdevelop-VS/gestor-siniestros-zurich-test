@@ -8,3 +8,4 @@ export const ALLOWED_TRANSITIONS: Record<ClaimStatus, ClaimStatus[]> = {
   InReview: ['Open', 'Closed'],
   Closed: ['InReview'],
 }
+

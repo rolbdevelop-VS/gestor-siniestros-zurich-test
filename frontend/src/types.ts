@@ -63,3 +63,4 @@ export interface ProblemDetails {
   instance?: string | null
   errors?: Record<string, string[]>
 }
+

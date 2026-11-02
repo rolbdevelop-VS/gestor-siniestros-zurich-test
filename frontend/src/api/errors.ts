@@ -69,3 +69,4 @@ function getDefaultTitleForStatus(status: number): string {
       return 'Error al procesar la solicitud'
   }
 }
+

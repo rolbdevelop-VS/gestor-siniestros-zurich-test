@@ -10,3 +10,4 @@ export function validateUserId(id: string): string | null {
   }
   return null
 }
+

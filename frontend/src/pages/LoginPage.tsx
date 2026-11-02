@@ -6,8 +6,8 @@ export function LoginPage() {
   const navigate = useNavigate()
   const { login } = useUser()
 
-  const [userInput, setUserInput] = useState<string>('1001')
-  const [passwordInput, setPasswordInput] = useState<string>('1234')
+  const [userInput, setUserInput] = useState<string>('')
+  const [passwordInput, setPasswordInput] = useState<string>('')
   const [errors, setErrors] = useState<{ user?: string; password?: string }>({})
 
   const validate = (): boolean => {
@@ -77,7 +77,7 @@ export function LoginPage() {
               htmlFor="username"
               style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#2d3748', marginBottom: '0.35rem' }}
             >
-              Usuario (número &gt; 0)
+              Usuario
             </label>
             <input
               id="username"
@@ -86,7 +86,7 @@ export function LoginPage() {
               maxLength={20}
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              placeholder="Ej. 1001"
+              placeholder="Número del colaborador"
               style={{
                 width: '100%',
                 padding: '0.65rem 0.8rem',
@@ -107,14 +107,14 @@ export function LoginPage() {
               htmlFor="password"
               style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#2d3748', marginBottom: '0.35rem' }}
             >
-              Contraseña (&ge; 4 dígitos)
+              Contraseña
             </label>
             <input
               id="password"
               type="password"
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
-              placeholder="Por defecto: 1234"
+              placeholder="Clave de acceso"
               style={{
                 width: '100%',
                 padding: '0.65rem 0.8rem',
@@ -123,9 +123,9 @@ export function LoginPage() {
                 fontSize: '0.95rem',
               }}
             />
-            <small style={{ display: 'block', marginTop: '0.25rem', color: '#a0aec0', fontSize: '0.75rem' }}>
-              Contraseña por defecto para cualquier usuario: 1234
-            </small>
+            {/* <small style={{ display: 'block', marginTop: '0.25rem', color: '#a0aec0', fontSize: '0.75rem' }}>
+              Contraseña maestra
+            </small> */}
             {errors.password && (
               <p style={{ margin: '0.3rem 0 0', fontSize: '0.8rem', color: '#e53e3e' }}>
                 {errors.password}
@@ -155,3 +155,4 @@ export function LoginPage() {
     </div>
   )
 }
+

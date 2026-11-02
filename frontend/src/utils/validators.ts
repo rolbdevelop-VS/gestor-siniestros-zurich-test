@@ -17,3 +17,4 @@ export function validateAmount(value: string): { isValid: boolean; amount?: numb
   }
   return { isValid: true, amount: parsed }
 }
+

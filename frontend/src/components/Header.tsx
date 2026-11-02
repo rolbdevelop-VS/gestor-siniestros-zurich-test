@@ -81,7 +81,7 @@ export function Header() {
             htmlFor="userIdInput"
             style={{ fontSize: '0.9rem', color: '#cbd5e1', fontWeight: 500 }}
           >
-            Usuario (número):
+            Usuario:
           </label>
           <div style={{ position: 'relative' }}>
             <input
