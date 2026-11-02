@@ -182,7 +182,7 @@ export function ClaimDetailPage() {
             <StatusBadge status={claim.currentStatus} />
           </div>
           <p style={{ color: '#718096', margin: '0.25rem 0 0', fontSize: '0.95rem' }}>
-            Póliza: <strong>{claim.policyNumber}</strong> &bull; Registrado el {formatDateTime(claim.createdAt)} por usuario <strong>{claim.createdBy}</strong>
+            Póliza: <strong style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}>{claim.policyNumber}</strong> &bull; Registrado el {formatDateTime(claim.createdAt)} por usuario <strong>{claim.createdBy}</strong>
           </p>
         </div>
 
@@ -317,15 +317,21 @@ export function ClaimDetailPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.95rem' }}>
             <div>
               <span style={{ color: '#718096', fontSize: '0.85rem', display: 'block' }}>Nombre del Asegurado</span>
-              <strong style={{ color: '#2d3748' }}>{claim.insuredName}</strong>
+              <strong style={{ color: '#2d3748', overflowWrap: 'anywhere', wordBreak: 'break-word', display: 'block' }}>
+                {claim.insuredName}
+              </strong>
             </div>
             <div>
               <span style={{ color: '#718096', fontSize: '0.85rem', display: 'block' }}>Tipo de Siniestro</span>
-              <span style={{ color: '#2d3748' }}>{claim.claimType}</span>
+              <span style={{ color: '#2d3748', overflowWrap: 'anywhere', wordBreak: 'break-word', display: 'block' }}>
+                {claim.claimType}
+              </span>
             </div>
             <div>
               <span style={{ color: '#718096', fontSize: '0.85rem', display: 'block' }}>Monto Estimado</span>
-              <strong style={{ color: '#002855', fontSize: '1.2rem' }}>{formatCurrency(claim.estimatedAmount)}</strong>
+              <strong style={{ color: '#002855', fontSize: '1.2rem', whiteSpace: 'nowrap', display: 'block' }}>
+                {formatCurrency(claim.estimatedAmount)}
+              </strong>
             </div>
             {claim.updatedAt && (
               <div>
@@ -460,13 +466,13 @@ export function ClaimDetailPage() {
           <p style={{ color: '#718096', fontStyle: 'italic' }}>No hay registros de historial disponibles.</p>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+            <table style={{ width: '100%', minWidth: '650px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
               <thead>
                 <tr style={{ backgroundColor: '#f7fafc', borderBottom: '2px solid #edf2f7', color: '#4a5568' }}>
-                  <th style={{ padding: '0.75rem 0.85rem' }}>Transición</th>
+                  <th style={{ padding: '0.75rem 0.85rem', whiteSpace: 'nowrap', minWidth: '180px' }}>Transición</th>
                   <th style={{ padding: '0.75rem 0.85rem' }}>Motivo</th>
-                  <th style={{ padding: '0.75rem 0.85rem' }}>Modificado por</th>
-                  <th style={{ padding: '0.75rem 0.85rem' }}>Fecha y hora</th>
+                  <th style={{ padding: '0.75rem 0.85rem', whiteSpace: 'nowrap', minWidth: '130px' }}>Modificado por</th>
+                  <th style={{ padding: '0.75rem 0.85rem', whiteSpace: 'nowrap', minWidth: '160px' }}>Fecha y hora</th>
                 </tr>
               </thead>
               <tbody>
@@ -483,13 +489,13 @@ export function ClaimDetailPage() {
                       )}
                       <StatusBadge status={h.newStatus} />
                     </td>
-                    <td style={{ padding: '0.75rem 0.85rem', color: '#4a5568' }}>
+                    <td style={{ padding: '0.75rem 0.85rem', color: '#4a5568', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
                       {h.changeReason ?? <span style={{ color: '#a0aec0', fontStyle: 'italic' }}>Sin motivo especificado</span>}
                     </td>
-                    <td style={{ padding: '0.75rem 0.85rem', fontWeight: 600, color: '#2d3748' }}>
+                    <td style={{ padding: '0.75rem 0.85rem', fontWeight: 600, color: '#2d3748', whiteSpace: 'nowrap' }}>
                       Usuario {h.changedBy}
                     </td>
-                    <td style={{ padding: '0.75rem 0.85rem', color: '#718096' }}>
+                    <td style={{ padding: '0.75rem 0.85rem', color: '#718096', whiteSpace: 'nowrap' }}>
                       {formatDateTime(h.changedAt)}
                     </td>
                   </tr>

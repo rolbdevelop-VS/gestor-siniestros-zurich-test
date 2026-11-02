@@ -258,16 +258,16 @@ export function ClaimsListPage() {
             overflowX: 'auto',
           }}
         >
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+          <table style={{ width: '100%', minWidth: '950px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
             <thead>
               <tr style={{ backgroundColor: '#f7fafc', borderBottom: '2px solid #edf2f7', color: '#4a5568' }}>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>Póliza</th>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>Asegurado</th>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>Tipo de siniestro</th>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, textAlign: 'right' }}>Monto estimado</th>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>Estado</th>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>Fecha de registro</th>
-                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, textAlign: 'center' }}>Acciones</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, minWidth: '120px' }}>Póliza</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, minWidth: '150px' }}>Asegurado</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, minWidth: '140px' }}>Tipo de siniestro</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, textAlign: 'right', whiteSpace: 'nowrap' }}>Monto estimado</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>Estado</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, whiteSpace: 'nowrap' }}>Fecha de registro</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 600, textAlign: 'center', whiteSpace: 'nowrap', minWidth: '130px' }}>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -279,21 +279,21 @@ export function ClaimsListPage() {
                     transition: 'background-color 0.15s ease',
                   }}
                 >
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: '#002855' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: '#002855', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
                     {claim.policyNumber}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem' }}>{claim.insuredName}</td>
-                  <td style={{ padding: '0.85rem 1rem', color: '#4a5568' }}>{claim.claimType}</td>
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'right', fontWeight: 600 }}>
+                  <td style={{ padding: '0.85rem 1rem', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>{claim.insuredName}</td>
+                  <td style={{ padding: '0.85rem 1rem', color: '#4a5568', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>{claim.claimType}</td>
+                  <td style={{ padding: '0.85rem 1rem', textAlign: 'right', fontWeight: 600, whiteSpace: 'nowrap' }}>
                     {formatCurrency(claim.estimatedAmount)}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem' }}>
+                  <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
                     <StatusBadge status={claim.currentStatus} />
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', color: '#718096', fontSize: '0.85rem' }}>
+                  <td style={{ padding: '0.85rem 1rem', color: '#718096', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
                     {formatDateTime(claim.createdAt)}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
+                  <td style={{ padding: '0.85rem 1rem', textAlign: 'center', whiteSpace: 'nowrap', minWidth: '130px' }}>
                     <Link
                       to={`/claims/${claim.id}`}
                       style={{
@@ -304,6 +304,8 @@ export function ClaimsListPage() {
                         padding: '0.25rem 0.5rem',
                         borderRadius: '4px',
                         border: '1px solid #bee3f8',
+                        whiteSpace: 'nowrap',
+                        display: 'inline-block',
                       }}
                     >
                       Ver detalle →
