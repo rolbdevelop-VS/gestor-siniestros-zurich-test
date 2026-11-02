@@ -5,6 +5,9 @@ export interface UserContextType {
   setUserId: (id: string) => void
   isValidUser: boolean
   validationError: string | null
+  isAuthenticated: boolean
+  login: (id: string) => void
+  logout: () => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)

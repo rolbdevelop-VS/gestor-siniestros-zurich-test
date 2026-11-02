@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useUser } from '../context/useUser'
 
 export function Header() {
-  const { userId, setUserId, isValidUser, validationError } = useUser()
+  const { userId, setUserId, isValidUser, validationError, isAuthenticated, logout } = useUser()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   return (
     <header
@@ -70,7 +76,7 @@ export function Header() {
           </nav>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <label
             htmlFor="userIdInput"
             style={{ fontSize: '0.9rem', color: '#cbd5e1', fontWeight: 500 }}
@@ -92,7 +98,7 @@ export function Header() {
                 backgroundColor: 'white',
                 color: '#1a202c',
                 fontSize: '0.9rem',
-                width: '120px',
+                width: '100px',
                 fontWeight: 600,
               }}
               title={validationError ?? 'Usuario válido'}
@@ -109,6 +115,38 @@ export function Header() {
             >
               {validationError}
             </span>
+          )}
+
+          {isAuthenticated ? (
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{
+                backgroundColor: 'transparent',
+                color: '#cbd5e1',
+                border: '1px solid #4a5568',
+                padding: '0.3rem 0.6rem',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+              }}
+            >
+              Salir
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              style={{
+                color: '#cbd5e1',
+                textDecoration: 'none',
+                fontSize: '0.85rem',
+                border: '1px solid #4a5568',
+                padding: '0.3rem 0.6rem',
+                borderRadius: '4px',
+              }}
+            >
+              Ingresar
+            </Link>
           )}
         </div>
       </div>
