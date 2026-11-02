@@ -114,10 +114,18 @@ ZurichClaims/
 │   └── .env.example               # Plantilla de variables de entorno
 ├── Documentation/
 │   ├── AI_LOG.md                  # Registro de decisiones y uso crítico de la IA
-│   └── Chat_Antigravity_History.md# Evidencia completa de conversación (pair programming)
+│   ├── Architecture_Diagram.md    # Diagramas detallados de arquitectura y componentes C4
+│   ├── Chat_Antigravity_History.md# Evidencia completa de conversación (pair programming)
+│   └── Claim_Lifecycle_Flow.md    # Diagramas de ciclo de vida y flujo de auditoría por usuario
 ├── ZurichClaims.sln               # Solución clásica .sln para compatibilidad con SDK 8
 └── README.md                      # Esta documentación
 ```
+
+### Diagramas de Arquitectura y Ciclo de Vida
+
+Para consultar la documentación gráfica detallada con diagramas Mermaid:
+- [Diagrama de Arquitectura del Sistema (C4 y Componentes)](./Documentation/Architecture_Diagram.md)
+- [Diagrama del Ciclo de Vida y Flujo de Auditoría de Siniestros](./Documentation/Claim_Lifecycle_Flow.md)
 
 ### Modelo de Datos (Relacional)
 
