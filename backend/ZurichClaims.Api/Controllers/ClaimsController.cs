@@ -22,7 +22,9 @@ public class ClaimsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IReadOnlyList<ClaimSummaryResponse>>> GetAll(
-        [FromQuery] ClaimStatus? status,
+        [FromQuery]
+        [EnumDataType(typeof(ClaimStatus), ErrorMessage = "El estado de consulta no es válido.")]
+        ClaimStatus? status,
         [FromQuery] string? policyNumber,
         [FromHeader(Name = "x-usuario")]
         [Required(ErrorMessage = "El encabezado 'x-usuario' es requerido.")]
