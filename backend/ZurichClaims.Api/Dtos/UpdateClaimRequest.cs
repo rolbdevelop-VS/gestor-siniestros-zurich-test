@@ -17,7 +17,7 @@ public class UpdateClaimRequest
     public string ClaimType { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "El monto estimado es obligatorio.")]
-    [Range(typeof(decimal), CreateClaimRequest.MinEstimatedAmount, CreateClaimRequest.MaxEstimatedAmount, ErrorMessage = CreateClaimRequest.AmountRangeErrorMessage)]
+    [Range(typeof(decimal), CreateClaimRequest.MinEstimatedAmount, CreateClaimRequest.MaxEstimatedAmount, ParseLimitsInInvariantCulture = true, ConvertValueInInvariantCulture = true, ErrorMessage = CreateClaimRequest.AmountRangeErrorMessage)]
     [MaxDecimalPlaces(2, ErrorMessage = "El monto estimado no puede tener más de 2 decimales.")]
     public decimal? EstimatedAmount { get; set; }
 }
