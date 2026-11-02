@@ -152,17 +152,56 @@ Accept: application/json
   "estimatedAmount": 10.100
 }
 
-### 12.3. Validación: Monto decimal máximo permitido (sin causar desbordamiento 500)
+### 12.3. Validación: Monto en el tope máximo permitido (999999999999.99 -> 201 Created)
 POST {{baseUrl}}/api/claims
 x-usuario: {{userId}}
 Content-Type: application/json
 Accept: application/json
 
 {
-  "policyNumber": "POL-2026-AUT-9907",
+  "policyNumber": "POL-TOPE-MAX",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 999999999999.99
+}
+
+### 12.4. Validación: Monto que excede el tope máximo (1000000000000 -> 400 BadRequest)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-EXC-MAX",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 1000000000000
+}
+
+### 12.5. Validación: Monto astronómico decimal.MaxValue (79228162514264337593543950335 -> 400 BadRequest sin 500)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-DEC-MAX",
   "insuredName": "Carlos Mendoza",
   "claimType": "Cristal roto",
   "estimatedAmount": 79228162514264337593543950335
+}
+
+### 12.6. Validación: Monto en el límite inferior mínimo (0.01 -> 201 Created)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-MIN-EXACTO",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 0.01
 }
 
 ### 13. Validación: Crear siniestro con status numérico en el body (debe retornar 400)
