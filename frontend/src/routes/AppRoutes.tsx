@@ -1,12 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/Layout'
+import { ClaimsListPage } from '../pages/ClaimsListPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 
-// Marcadores de posición que serán completados en los pasos 4, 5 y 6
-function ClaimsListPlaceholder() {
-  return <div><h2>Listado de Siniestros</h2></div>
-}
-
+// Marcadores de posición que serán completados en los pasos 5 y 6
 function ClaimNewPlaceholder() {
   return <div><h2>Nuevo Siniestro</h2></div>
 }
@@ -24,7 +21,7 @@ export function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<ClaimsListPlaceholder />} />
+          <Route index element={<ClaimsListPage />} />
           <Route path="claims/new" element={<ClaimNewPlaceholder />} />
           <Route path="claims/:id" element={<ClaimDetailPlaceholder />} />
           <Route path="claims/:id/edit" element={<ClaimEditPlaceholder />} />
