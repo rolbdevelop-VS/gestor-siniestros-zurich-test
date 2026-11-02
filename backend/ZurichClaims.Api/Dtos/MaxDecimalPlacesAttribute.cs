@@ -22,9 +22,7 @@ public class MaxDecimalPlacesAttribute : ValidationAttribute
 
         if (value is decimal decimalValue)
         {
-            // Verificación matemática: multiplicamos por 10^_maxDecimalPlaces y comprobamos que no haya residuo fraccionario
-            decimal multiplier = (decimal)Math.Pow(10, _maxDecimalPlaces);
-            if (decimal.Remainder(decimalValue * multiplier, 1m) != 0m)
+            if (Math.Round(decimalValue, _maxDecimalPlaces, MidpointRounding.AwayFromZero) != decimalValue)
             {
                 return new ValidationResult(ErrorMessage ?? $"El valor no puede tener más de {_maxDecimalPlaces} decimales.");
             }

@@ -123,7 +123,46 @@ Accept: application/json
   "policyNumber": "POL-2026-AUT-9904",
   "insuredName": "Carlos Mendoza",
   "claimType": "Cristal roto",
-  "estimatedAmount": 1250.755
+  "estimatedAmount": 10.999
+}
+
+### 12.1. Validación: Crear siniestro con 2 decimales exactos (válido)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9905",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 10.99
+}
+
+### 12.2. Validación: Crear siniestro con ceros adicionales a la derecha (válido 10.100)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9906",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 10.100
+}
+
+### 12.3. Validación: Monto decimal máximo permitido (sin causar desbordamiento 500)
+POST {{baseUrl}}/api/claims
+x-usuario: {{userId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "policyNumber": "POL-2026-AUT-9907",
+  "insuredName": "Carlos Mendoza",
+  "claimType": "Cristal roto",
+  "estimatedAmount": 79228162514264337593543950335
 }
 
 ### 13. Validación: Crear siniestro con status numérico en el body (debe retornar 400)
