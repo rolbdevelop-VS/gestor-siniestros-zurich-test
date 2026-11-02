@@ -9,30 +9,25 @@ Este documento detalla el ciclo de vida del siniestro, las transiciones de estad
 El sistema implementa una máquina de estados controlada por [`StatusTransitions.cs`](file:///c:/Proyectos/Zurich/ZCC/PruebaTecnica/backend/ZurichClaims.Api/Services/StatusTransitions.cs), evitando saltos arbitrarios entre estados:
 
 ```mermaid
-stateDiagram-v2
-    direction LR
+flowchart TD
+    classDef stateNode fill:#e0f2fe,stroke:#0072ce,stroke-width:2px,color:#002855;
+    classDef initNode fill:#002855,stroke:#001f3f,stroke-width:2px,color:#ffffff,font-weight:600;
+    classDef errorNode fill:#fff1f2,stroke:#f43f5e,stroke-width:1.5px,color:#9f1239;
 
-    [*] --> Open : Creación del Siniestro (POST)\nAuditado: CreatedBy = x-usuario\nHistorial: (null → Open)
+    Init(["● Inicio"]):::initNode
+    Open["Abierto (Open)\nSiniestro registrado en sistema"]:::stateNode
+    InReview["En Revisión (InReview)\nEvaluación técnica y ajuste"]:::stateNode
+    Closed["Cerrado (Closed)\nResolución y finiquito concluido"]:::stateNode
 
-    Open --> InReview : Enviar a Revisión (POST /status)\nAuditado: ChangedBy = x-usuario
-    InReview --> Open : Reabrir Siniestro (POST /status)\nAuditado: ChangedBy = x-usuario
-    
-    InReview --> Closed : Cerrar Siniestro (POST /status)\nAuditado: ChangedBy = x-usuario
-    Closed --> InReview : Reabrir para Revisión (POST /status)\nAuditado: ChangedBy = x-usuario
+    Init -- "1. POST /api/claims\nAuditado: CreatedBy = x-usuario\nHistorial: (null a Open)" --> Open
+    Open -- "2. POST /status (A revisión)\nAuditado: ChangedBy = x-usuario" --> InReview
+    InReview -- "3. POST /status (Reabrir)\nAuditado: ChangedBy = x-usuario" --> Open
+    InReview -- "4. POST /status (Cerrar)\nAuditado: ChangedBy = x-usuario" --> Closed
+    Closed -- "5. POST /status (Reabrir para revisión)\nAuditado: ChangedBy = x-usuario" --> InReview
 
-    state "Transición Inválida (HTTP 400)" as InvalidTransition {
-        Open --> Closed : Salto directo no permitido
-        Closed --> Open : Reapertura directa no permitida
-        Open --> Open : Mismo estado no permitido
-        InReview --> InReview : Mismo estado no permitido
-        Closed --> Closed : Mismo estado no permitido
-    }
-
-    note right of InvalidTransition
-        Cualquier intento de transición no autorizada
-        retorna HTTP 400 Bad Request con ProblemDetails
-        type = ".../invalid-status-transition"
-    end note
+    subgraph Restricciones ["Reglas de Validación y Transiciones Inválidas"]
+        InvalidRules["HTTP 400 Bad Request (RFC 7807: invalid-status-transition)\n\n❌ Open a Closed: Salto directo no permitido\n❌ Closed a Open: Reapertura directa no permitida\n❌ Mismo estado: Transición cíclica redundante no permitida"]:::errorNode
+    end
 ```
 
 ---
