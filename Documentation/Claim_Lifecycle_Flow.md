@@ -118,3 +118,4 @@ La siguiente tabla resume qué campos de auditoría se actualizan en la base de 
 1. **Inmutabilidad del Historial:** La tabla `ClaimStatusHistories` es de solo inserción (*append-only*). Ninguna acción de la API modifica ni elimina registros de historial existentes.
 2. **Protección contra Borrado Físico Cascada:** La clave foránea está configurada con `OnDelete(DeleteBehavior.Restrict)`. Si una instrucción SQL física intentara ejecutar `DELETE FROM Claims WHERE Id = X`, el motor de base de datos SQLite/SQL Server rechazará la operación por violación de restricción referencial si el siniestro posee registros de historial.
 3. **Consistencia Temporal:** En los cambios de estado, la marca temporal `ChangedAt` del historial es exactamente idéntica a `UpdatedAt` del siniestro, garantizando sincronización exacta entre la entidad y su bitácora.
+

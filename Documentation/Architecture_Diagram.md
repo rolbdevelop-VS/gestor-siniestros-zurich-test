@@ -122,3 +122,4 @@ sequenceDiagram
     Client-->>UI: Objeto tipado ClaimDetailResponse
     UI-->>Usuario: Muestra detalle del siniestro creado
 ```
+
